@@ -6,7 +6,6 @@
     <param name="versionformat">@PARENT_TAG@</param>
     <param name="versionrewrite-pattern">v(.*)</param>
   </service>
-  </service>
   <service name="tar" mode="buildtime"/>
   <service name="recompress" mode="buildtime">
     <param name="compression">gz</param>
