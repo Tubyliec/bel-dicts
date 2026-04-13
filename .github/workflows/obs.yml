@@ -1,0 +1,37 @@
+name: Trigger OBS rebuild
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  trigger-obs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install osc
+        run: sudo apt-get install -y osc
+
+      - name: Configure osc
+        run: |
+          mkdir -p ~/.config/osc
+          cat > ~/.config/osc/oscrc << EOF
+          [general]
+          apiurl = https://api.opensuse.org
+          [https://api.opensuse.org]
+          user = ${{ secrets.OBS_USERNAME }}
+          pass = ${{ secrets.OBS_PASSWORD }}
+          EOF
+
+      - name: Update version and trigger OBS
+        run: |
+          TAG="${GITHUB_REF#refs/tags/}"
+          sed -i "s|refs/tags/.*|${TAG}</param>|" obs/_service
+          osc co home:${{ secrets.OBS_USERNAME }}:bel-dicts bel-dicts
+          cd home:${{ secrets.OBS_USERNAME }}:bel-dicts/bel-dicts
+          cp $GITHUB_WORKSPACE/obs/_service .
+          cp $GITHUB_WORKSPACE/obs/bel-dicts.spec .
+          osc addremove
+          osc commit -m "Bump to ${TAG}"
