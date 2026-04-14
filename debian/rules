@@ -1,0 +1,15 @@
+#!/usr/bin/make -f
+%:
+	dh $@
+
+override_dh_auto_build:
+
+override_dh_auto_test:
+
+override_dh_auto_install:
+	install -d debian/bel-dicts/usr/share/hunspell
+	install -m 644 dict/be-BY.aff debian/bel-dicts/usr/share/hunspell/
+	install -m 644 dict/be-BY.dic debian/bel-dicts/usr/share/hunspell/
+	install -d debian/bel-dicts/usr/share/myspell/dicts
+	ln -sf /usr/share/hunspell/be-BY.aff debian/bel-dicts/usr/share/myspell/dicts/be-BY.aff
+	ln -sf /usr/share/hunspell/be-BY.dic debian/bel-dicts/usr/share/myspell/dicts/be-BY.dic

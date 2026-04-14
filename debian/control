@@ -1,0 +1,13 @@
+Source: bel-dicts
+Section: text
+Priority: optional
+Maintainer: tubyliec <antikruk@vivaldi.net>
+Build-Depends: debhelper-compat (= 13)
+Standards-Version: 4.6.2
+
+Package: bel-dicts
+Architecture: all
+Depends: hunspell
+Description: Belarusian dictionary for Hunspell
+ Hunspell spell-checking dictionary for the Belarusian language (be-BY).
+ Includes affix rules (.aff) and word list (.dic).

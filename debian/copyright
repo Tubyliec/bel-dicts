@@ -1,0 +1,7 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: bel-dicts
+Source: https://github.com/tubyliec/bel-dicts
+
+Files: *
+Copyright: 2026 tubyliec <antikruk@vivaldi.net>
+License: LGPL-2.1+
