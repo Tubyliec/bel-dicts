@@ -5,6 +5,7 @@
     <param name="revision">refs/tags/v0.5.2</param>
     <param name="versionformat">@PARENT_TAG@</param>
     <param name="versionrewrite-pattern">v(.*)</param>
+    <param name="extract">debian</param>
   </service>
   <service name="tar" mode="buildtime"/>
   <service name="recompress" mode="buildtime">
