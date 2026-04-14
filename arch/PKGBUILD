@@ -1,14 +1,22 @@
 pkgname=bel-dicts
-pkgver=1.0.0
+pkgver=0.5.2
 pkgrel=1
-pkgdesc="Belarusian dictionaries data package"
+pkgdesc="Belarusian dictionary for Hunspell"
 arch=('any')
-license=('MIT')
+license=('LGPL-2.1-or-later')
+depends=('hunspell')
+url="https://github.com/tubyliec/bel-dicts"
 
-source=("data")
+source=("$pkgname-$pkgver.tar.gz::https://github.com/tubyliec/bel-dicts/archive/refs/tags/v$pkgver.tar.gz")
 sha256sums=('SKIP')
 
 package() {
-  mkdir -p "$pkgdir/usr/share/bel-dicts"
-  cp -r data/* "$pkgdir/usr/share/bel-dicts/"
+  cd "$pkgname-$pkgver"
+  install -d "$pkgdir/usr/share/hunspell"
+  install -m 644 dict/be-BY.aff "$pkgdir/usr/share/hunspell/"
+  install -m 644 dict/be-BY.dic "$pkgdir/usr/share/hunspell/"
+
+  install -d "$pkgdir/usr/share/myspell/dicts"
+  ln -sf /usr/share/hunspell/be-BY.aff "$pkgdir/usr/share/myspell/dicts/be-BY.aff"
+  ln -sf /usr/share/hunspell/be-BY.dic "$pkgdir/usr/share/myspell/dicts/be-BY.dic"
 }

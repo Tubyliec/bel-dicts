@@ -34,6 +34,14 @@ sudo dnf config-manager --add-repo \
 sudo dnf install bel-dicts
 ```
 
+### Arch Linux
+
+```bash
+git clone https://github.com/tubyliec/bel-dicts.git
+cd bel-dicts/arch
+makepkg -si
+```
+
 ---
 
 ## Праверка ўсталявання

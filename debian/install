@@ -1,1 +1,2 @@
-data/* usr/share/bel-dicts/
+dict/be-BY.aff usr/share/hunspell/
+dict/be-BY.dic usr/share/hunspell/
