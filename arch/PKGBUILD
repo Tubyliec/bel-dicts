@@ -1,0 +1,14 @@
+pkgname=bel-dicts
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="Belarusian dictionaries data package"
+arch=('any')
+license=('MIT')
+
+source=("data")
+sha256sums=('SKIP')
+
+package() {
+  mkdir -p "$pkgdir/usr/share/bel-dicts"
+  cp -r data/* "$pkgdir/usr/share/bel-dicts/"
+}
