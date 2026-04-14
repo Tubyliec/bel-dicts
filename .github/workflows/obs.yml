@@ -32,7 +32,7 @@ jobs:
           cd home:${{ secrets.OBS_USERNAME }}:bel-dicts/bel-dicts
 
           cp $GITHUB_WORKSPACE/obs/_service .
-          cp $GITHUB_WORKSPACE/packaging/rpm/*.spec .
+          cp $GITHUB_WORKSPACE/rpm/*.spec .
 
           osc add _service || true
           osc add *.spec || true
