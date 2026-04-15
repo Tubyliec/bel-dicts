@@ -1,50 +1,45 @@
 Name:           bel-dicts
-Version:        0.6.7
-Release:        0%{?dist}
-Summary:        Belarusian dictionaries for Hunspell and Myspell
-License:        GPL-2.0-or-later OR LGPL-2.1-or-later OR MPL-1.1
-Group:          Productivity/Text/Utilities
-URL:            https://github.com/tubyliec/bel-dicts
-Source0:        %{name}-%{version}.tar.gz
+Version:        0.6.8
+Release:        1
+Summary:        Belarusian dictionaries for Hunspell
+License:        GPL-3.0-or-later
+Group:          Productivity/Text/Spell
 BuildArch:      noarch
 
-%if 0%{?fedora} || 0%{?rhel}
 Requires:       hunspell
-%endif
-
-%if 0%{?suse_version}
-Requires:       hunspell
-Requires:       myspell-data
-Supplements:    hunspell
-%endif
 
 %description
-Belarusian hunspell dictionaries (affix and dictionary files)
-for spell-checking in applications like LibreOffice, Firefox, etc.
+Belarusian dictionaries (be-BY) for Hunspell.
 
 %prep
 %setup -q
 
 %build
-# No build required for data files
+# nothing to build
 
 %install
-install -d %{buildroot}%{_datadir}/hunspell
-install -d %{buildroot}%{_datadir}/myspell/dicts
+mkdir -p %{buildroot}%{_datadir}/hunspell
 
-install -m 0644 dict/be-BY.aff %{buildroot}%{_datadir}/hunspell/be-BY.aff
-install -m 0644 dict/be-BY.dic %{buildroot}%{_datadir}/hunspell/be-BY.dic
+install -m 644 dict/be-BY.aff %{buildroot}%{_datadir}/hunspell/
+install -m 644 dict/be-BY.dic %{buildroot}%{_datadir}/hunspell/
 
-# Symlinks for myspell compatibility
-ln -sf %{_datadir}/hunspell/be-BY.aff %{buildroot}%{_datadir}/myspell/dicts/be-BY.aff
-ln -sf %{_datadir}/hunspell/be-BY.dic %{buildroot}%{_datadir}/myspell/dicts/be-BY.dic
+%post
+if [ -d %{_datadir}/myspell/dicts ]; then
+    ln -sf ../../hunspell/be-BY.aff %{_datadir}/myspell/dicts/be-BY.aff
+    ln -sf ../../hunspell/be-BY.dic %{_datadir}/myspell/dicts/be-BY.dic
+fi
+
+%postun
+if [ $1 -eq 0 ]; then
+    rm -f %{_datadir}/myspell/dicts/be-BY.aff
+    rm -f %{_datadir}/myspell/dicts/be-BY.dic
+fi
 
 %files
 %license LICENSE
 %doc README.md
 %{_datadir}/hunspell/be-BY.aff
 %{_datadir}/hunspell/be-BY.dic
-%{_datadir}/myspell/dicts/be-BY.aff
-%{_datadir}/myspell/dicts/be-BY.dic
 
 %changelog
+Wed Apr 15 2026 tubyliec <antikruk@vivaldi.net> - 0.6.8
