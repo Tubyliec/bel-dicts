@@ -4,6 +4,7 @@ Release:        1%{?dist}
 Summary:        Belarusian dictionaries for Hunspell
 License:        GPL-3.0-or-later
 BuildArch:      noarch
+Source0:        %{name}-%{version}.tar.gz
 
 Requires:       hunspell
 
@@ -11,19 +12,11 @@ Requires:       hunspell
 Belarusian dictionaries (be-BY) for Hunspell.
 
 %prep
-# Handle both tarball (from tar service) and direct source scenarios
-if [ -f %{_sourcedir}/%{name}-%{version}.tar.* ]; then
-    %setup -q
-else
-    # For obs_scm without tar service, work directly with sources
-    cd %{_sourcedir}
-    if [ ! -d dict ]; then
-        if [ -d %{name}-%{version} ]; then
-            cp -r %{name}-%{version}/dict . 2>/dev/null || true
-        elif [ -d bel-dicts-* ]; then
-            cp -r bel-dicts-*/dict . 2>/dev/null || true
-        fi
-    fi
+# Extract the tarball created by tar service at buildtime
+%setup -q
+# Ensure dict directory exists
+if [ ! -d dict ]; then
+    mkdir -p dict
 fi
 
 %build
