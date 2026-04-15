@@ -7,13 +7,5 @@
     <param name="versionrewrite-pattern">v(.*)</param>
   </service>
 
-  <service name="tar">
-    <param name="filename">bel-dicts.tar</param>
-  </service>
-  <service name="recompress">
-    <param name="file">bel-dicts.tar</param>
-    <param name="compression">gz</param>
-  </service>
-
   <service name="set_version"/>
 </services>

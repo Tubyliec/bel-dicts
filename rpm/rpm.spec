@@ -5,7 +5,7 @@ Summary:        Belarusian dictionaries for Hunspell
 License:        GPL-3.0-or-later
 BuildArch:      noarch
 
-Source0:        %{name}-%{version}.tar.gz
+Source0:        %{name}-%{version}.obscpio
 
 Requires:       hunspell
 
