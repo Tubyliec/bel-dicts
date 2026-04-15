@@ -4,7 +4,7 @@ Release:        1%{?dist}
 Summary:        Belarusian dictionary for Hunspell
 License:        LGPL-2.1+
 URL:            https://github.com/tubyliec/bel-dicts
-Source0:        %{name}-%{version}.tar.gz
+Source0:        %{name}-%{version}.obscpio
 BuildArch:      noarch
 
 %if 0%{?fedora} || 0%{?rhel}
@@ -42,5 +42,5 @@ ln -sf %{_datadir}/hunspell/be-BY.dic %{buildroot}%{_datadir}/myspell/dicts/be-B
 %{_datadir}/myspell/dicts/be-BY.dic
 
 %changelog
-* Sat Apr 12 2026 tubyliec <antikruk@vivaldi.net> - 0.5.2
+* Sun Apr 12 2026 tubyliec <antikruk@vivaldi.net> - 0.5.2
 - Initial release
