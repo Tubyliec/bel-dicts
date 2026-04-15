@@ -1,11 +1,9 @@
 Name:           bel-dicts
-Version:        0.6.9
+Version:        0.1
 Release:        1%{?dist}
 Summary:        Belarusian dictionaries for Hunspell
 License:        GPL-3.0-or-later
 BuildArch:      noarch
-
-Source0:        %{name}-%{version}.obscpio
 
 Requires:       hunspell
 
@@ -13,7 +11,20 @@ Requires:       hunspell
 Belarusian dictionaries (be-BY) for Hunspell.
 
 %prep
-%setup -q
+# Handle both tarball (from tar service) and direct source scenarios
+if [ -f %{_sourcedir}/%{name}-%{version}.tar.* ]; then
+    %setup -q
+else
+    # For obs_scm without tar service, work directly with sources
+    cd %{_sourcedir}
+    if [ ! -d dict ]; then
+        if [ -d %{name}-%{version} ]; then
+            cp -r %{name}-%{version}/dict . 2>/dev/null || true
+        elif [ -d bel-dicts-* ]; then
+            cp -r bel-dicts-*/dict . 2>/dev/null || true
+        fi
+    fi
+fi
 
 %build
 # nothing
@@ -43,5 +54,5 @@ fi
 %{_datadir}/hunspell/be-BY.dic
 
 %changelog
-* Wed Apr 15 2026 tubyliec <antikruk@vivaldi.net> - 0.6.9-1
+* Wed Apr 15 2026 tubyliec <antikruk@vivaldi.net> - 0.1-1
 - Update dictionaries
