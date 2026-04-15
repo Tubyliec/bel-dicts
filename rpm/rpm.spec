@@ -1,10 +1,11 @@
 Name:           bel-dicts
-Version:        0.6.8
-Release:        1
+Version:        0.6.9
+Release:        1%{?dist}
 Summary:        Belarusian dictionaries for Hunspell
 License:        GPL-3.0-or-later
-Group:          Productivity/Text/Spell
 BuildArch:      noarch
+
+Source0:        %{name}-%{version}.tar.gz
 
 Requires:       hunspell
 
@@ -15,7 +16,7 @@ Belarusian dictionaries (be-BY) for Hunspell.
 %setup -q
 
 %build
-# nothing to build
+# nothing
 
 %install
 mkdir -p %{buildroot}%{_datadir}/hunspell
@@ -42,4 +43,5 @@ fi
 %{_datadir}/hunspell/be-BY.dic
 
 %changelog
-Wed Apr 15 2026 tubyliec <antikruk@vivaldi.net> - 0.6.8
+* Wed Apr 15 2026 tubyliec <antikruk@vivaldi.net> - 0.6.9-1
+- Update dictionaries
