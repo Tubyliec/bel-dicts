@@ -7,5 +7,11 @@
     <param name="versionrewrite-pattern">v(.*)</param>
   </service>
 
-  <service name="set_version"/>
+  <service name="tar" mode="buildtime"/>
+  <service name="recompress" mode="buildtime">
+    <param name="file">*.tar</param>
+    <param name="compression">gz</param>
+  </service>
+
+  <service name="set_version" mode="buildtime"/>
 </services>
