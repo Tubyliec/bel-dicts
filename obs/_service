@@ -2,7 +2,6 @@
   <service name="obs_scm">
     <param name="url">https://github.com/tubyliec/bel-dicts</param>
     <param name="scm">git</param>
-    <param name="revision">refs/tags/v*</param>
     <param name="versionformat">@PARENT_TAG@</param>
     <param name="versionrewrite-pattern">v(.*)</param>
   </service>
