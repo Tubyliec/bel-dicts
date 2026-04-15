@@ -2,6 +2,7 @@
   <service name="obs_scm">
     <param name="url">https://github.com/tubyliec/bel-dicts</param>
     <param name="scm">git</param>
+    <param name="revision">main</param>
     <param name="versionformat">@PARENT_TAG@</param>
   </service>
 
