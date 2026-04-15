@@ -1,5 +1,5 @@
 pkgname=bel-dicts
-pkgver=0.5.2
+pkgver=0.6
 pkgrel=1
 pkgdesc="Belarusian dictionary for Hunspell"
 arch=('any')
@@ -7,7 +7,7 @@ license=('LGPL-2.1-or-later')
 depends=('hunspell')
 url="https://github.com/tubyliec/bel-dicts"
 
-source=("$pkgname-$pkgver.tar.gz::https://github.com/tubyliec/bel-dicts/archive/refs/tags/v$pkgver.tar.gz")
+source=("$pkgname-$pkgver.tar.gz::https://github.com/tubyliec/bel-dicts/archive/refs/tags/$pkgver.tar.gz")
 sha256sums=('SKIP')
 
 package() {

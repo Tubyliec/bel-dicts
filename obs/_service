@@ -3,7 +3,6 @@
     <param name="url">https://github.com/tubyliec/bel-dicts</param>
     <param name="scm">git</param>
     <param name="versionformat">@PARENT_TAG@</param>
-    <param name="versionrewrite-pattern">v(.*)</param>
   </service>
 
   <service name="recompress">
