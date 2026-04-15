@@ -13,7 +13,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install osc
-        run: sudo apt-get update && sudo apt-get install -y osc
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y osc
 
       - name: Configure osc
         run: |
@@ -21,6 +23,7 @@ jobs:
           cat > ~/.config/osc/oscrc << EOF
           [general]
           apiurl = https://api.opensuse.org
+
           [https://api.opensuse.org]
           user = ${{ secrets.OBS_USERNAME }}
           pass = ${{ secrets.OBS_PASSWORD }}
@@ -31,10 +34,8 @@ jobs:
           osc co home:${{ secrets.OBS_USERNAME }}:bel-dicts bel-dicts
           cd home:${{ secrets.OBS_USERNAME }}:bel-dicts/bel-dicts
 
-          cp $GITHUB_WORKSPACE/obs/_service .
-          cp $GITHUB_WORKSPACE/rpm/*.spec .
+          cp "$GITHUB_WORKSPACE/obs/_service" .
+          cp "$GITHUB_WORKSPACE/rpm/"*.spec .
 
-          osc add _service || true
-          osc add *.spec || true
-
+          osc addremove
           osc commit -m "Trigger rebuild for ${GITHUB_REF##*/}"
