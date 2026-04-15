@@ -43,9 +43,10 @@ fi
 %files
 %license LICENSE
 %doc README.md
+%dir %{_datadir}/hunspell
 %{_datadir}/hunspell/be-BY.aff
 %{_datadir}/hunspell/be-BY.dic
 
 %changelog
-* Wed Apr 15 2026 tubyliec <antikruk@vivaldi.net> - 0.1-1
+* Wed Apr 15 2026 tubyliec <antikruk@vivaldi.net> - 0.1
 - Update dictionaries
