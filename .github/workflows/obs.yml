@@ -29,14 +29,62 @@ jobs:
           pass = ${{ secrets.OBS_PASSWORD }}
           EOF
 
-      - name: Trigger OBS rebuild
+      - name: Debug file structure before OBS checkout
+        run: |
+          echo "=== Current directory ==="
+          pwd
+          echo "=== Root files ==="
+          ls -la
+          echo "=== debian/ directory ==="
+          ls -la debian/ || echo "ERROR: debian/ NOT FOUND!"
+          echo "=== obs/ directory ==="
+          ls -la obs/ || echo "obs/ not found"
+          echo "=== rpm/ directory ==="
+          ls -la rpm/ || echo "rpm/ not found"
+
+      - name: Make debian/rules executable
+        run: |
+          if [ -f "debian/rules" ]; then
+            chmod +x debian/rules
+            echo "Made debian/rules executable"
+          else
+            echo "WARNING: debian/rules not found!"
+          fi
+
+      - name: Checkout OBS package and update
         run: |
           osc co home:${{ secrets.OBS_USERNAME }}:bel-dicts bel-dicts
           cd home:${{ secrets.OBS_USERNAME }}:bel-dicts/bel-dicts
 
-          cp "$GITHUB_WORKSPACE/obs/_service" .
-          cp "$GITHUB_WORKSPACE/rpm/"*.spec .
-          cp -r "$GITHUB_WORKSPACE/debian" .
+          echo "=== Current OBS package contents before update ==="
+          ls -la
+
+          cp "$GITHUB_WORKSPACE/obs/_service" . || echo "No _service file"
+          cp "$GITHUB_WORKSPACE/obs/_multibuild" . 2>/dev/null || echo "No _multibuild file"
+          cp "$GITHUB_WORKSPACE/rpm/"*.spec . || echo "No spec file"
+
+          if [ -d "$GITHUB_WORKSPACE/debian" ]; then
+            rm -rf debian
+            cp -r "$GITHUB_WORKSPACE/debian" .
+            chmod +x debian/rules 2>/dev/null || echo "Warning: Could not set executable bit on debian/rules"
+            echo "=== Debian directory copied ==="
+            ls -la debian/
+          else
+            echo "ERROR: debian/ directory not found in workspace!"
+            exit 1
+          fi
+
+          echo "=== OBS package contents after update ==="
+          ls -la
 
           osc addremove
-          osc commit -m "Trigger rebuild for ${GITHUB_REF##*/}"
+          osc status
+          osc commit -m "Trigger rebuild for ${GITHUB_REF##*/} with debian support"
+
+      - name: Verify OBS commit
+        run: |
+          cd home:${{ secrets.OBS_USERNAME }}:bel-dicts/bel-dicts
+          echo "=== Final package state ==="
+          osc list
+          echo "=== Check if debian/ exists remotely ==="
+          osc ls -v | grep debian || echo "WARNING: debian/ not visible in OBS!"
