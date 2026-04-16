@@ -4,7 +4,7 @@ Release:        1%{?dist}
 Summary:        Belarusian dictionaries for Hunspell
 License:        GPL-3.0-or-later
 BuildArch:      noarch
-Source0:        %{name}-%{version}.tar.gz
+Source0:        %{name}-%{version}.obscpio
 
 Requires:       hunspell
 
@@ -12,12 +12,7 @@ Requires:       hunspell
 Belarusian dictionaries (be-BY) for Hunspell.
 
 %prep
-# Extract the tarball created by tar service at buildtime
-%setup -q
-# Ensure dict directory exists
-if [ ! -d dict ]; then
-    mkdir -p dict
-fi
+%setup -q -D -T
 
 %build
 # nothing
@@ -48,5 +43,5 @@ fi
 %{_datadir}/hunspell/be-BY.dic
 
 %changelog
-* Wed Apr 15 2026 tubyliec <antikruk@vivaldi.net> - 0.1
-- Update dictionaries
+* Wed Apr 15 2026 tubyliec <antikruk@vivaldi.net> - 0
+- see git log
