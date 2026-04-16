@@ -1,3 +1,4 @@
 <multibuild>
-  <package>bel-dicts</package>
+  <flavor>rpm</flavor>
+  <flavor>deb</flavor>
 </multibuild>
