@@ -36,6 +36,7 @@ jobs:
 
           cp "$GITHUB_WORKSPACE/obs/_service" .
           cp "$GITHUB_WORKSPACE/rpm/"*.spec .
+          cp -r "$GITHUB_WORKSPACE/debian" .
 
           osc addremove
           osc commit -m "Trigger rebuild for ${GITHUB_REF##*/}"
