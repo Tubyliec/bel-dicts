@@ -21,13 +21,13 @@ jobs:
         run: |
           mkdir -p ~/.config/osc
           cat > ~/.config/osc/oscrc << EOF
-          [general]
-          apiurl = https://api.opensuse.org
+[general]
+apiurl = https://api.opensuse.org
 
-          [https://api.opensuse.org]
-          user = ${{ secrets.OBS_USERNAME }}
-          pass = ${{ secrets.OBS_PASSWORD }}
-          EOF
+[https://api.opensuse.org]
+user = ${{ secrets.OBS_USERNAME }}
+pass = ${{ secrets.OBS_PASSWORD }}
+EOF
 
       - name: Debug file structure before OBS checkout
         run: |
@@ -55,21 +55,22 @@ jobs:
         run: |
           osc co home:${{ secrets.OBS_USERNAME }}:bel-dicts bel-dicts
           cd home:${{ secrets.OBS_USERNAME }}:bel-dicts/bel-dicts
-          
+
           echo "=== Current OBS package contents before update ==="
           ls -la
-          
+
           cp "$GITHUB_WORKSPACE/obs/_service" . || echo "No _service file"
           cp "$GITHUB_WORKSPACE/rpm/"*.spec . || echo "No spec file"
-          
+
           rm -rf debian
           cp -r "$GITHUB_WORKSPACE/debian" .
           chmod +x debian/rules 2>/dev/null || echo "Warning: Could not set executable bit"
-          
+
           echo "=== OBS package contents after update ==="
           ls -la
           ls -la debian/
-          
+
+          osc add debian
           osc addremove
           osc status
           osc commit -m "Trigger rebuild for ${GITHUB_REF##*/}"
@@ -78,6 +79,6 @@ jobs:
         run: |
           cd home:${{ secrets.OBS_USERNAME }}:bel-dicts/bel-dicts
           echo "=== Final package state ==="
-          osc list
+          osc ls
           echo "=== Check if debian/ exists remotely ==="
           osc ls -v | grep debian || echo "WARNING: debian/ not visible in OBS!"
