@@ -1,3 +1,9 @@
 #!/usr/bin/make -f
+
 %:
 	dh $@
+
+override_dh_auto_install:
+	mkdir -p debian/bel-dicts/usr/share/hunspell
+	cp dict/be-BY.aff debian/bel-dicts/usr/share/hunspell/
+	cp dict/be-BY.dic debian/bel-dicts/usr/share/hunspell/

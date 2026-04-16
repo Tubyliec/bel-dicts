@@ -2,6 +2,7 @@ Source: bel-dicts
 Section: text
 Priority: optional
 Maintainer: tubyliec <antikruk@vivaldi.net>
+Build-Depends: debhelper-compat (= 13)
 Standards-Version: 0.1
 
 Package: bel-dicts

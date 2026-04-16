@@ -1,4 +1,0 @@
-<multibuild>
-  <flavor>rpm</flavor>
-  <flavor>deb</flavor>
-</multibuild>
