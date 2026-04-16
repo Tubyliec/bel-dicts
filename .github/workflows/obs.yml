@@ -66,14 +66,11 @@ jobs:
           cp -r "$GITHUB_WORKSPACE/debian" .
           chmod +x debian/rules 2>/dev/null || echo "Warning: Could not set executable bit"
           
-          osc add debian
-          osc add debian/*
-          osc add debian/source/* 2>/dev/null || echo "No source subdir"
-          
           echo "=== OBS package contents after update ==="
           ls -la
           ls -la debian/
           
+          osc addremove
           osc status
           osc commit -m "Trigger rebuild for ${GITHUB_REF##*/}"
 
