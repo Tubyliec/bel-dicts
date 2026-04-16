@@ -55,31 +55,27 @@ jobs:
         run: |
           osc co home:${{ secrets.OBS_USERNAME }}:bel-dicts bel-dicts
           cd home:${{ secrets.OBS_USERNAME }}:bel-dicts/bel-dicts
-
+          
           echo "=== Current OBS package contents before update ==="
           ls -la
-
+          
           cp "$GITHUB_WORKSPACE/obs/_service" . || echo "No _service file"
-          cp "$GITHUB_WORKSPACE/obs/_multibuild" . 2>/dev/null || echo "No _multibuild file"
           cp "$GITHUB_WORKSPACE/rpm/"*.spec . || echo "No spec file"
-
-          if [ -d "$GITHUB_WORKSPACE/debian" ]; then
-            rm -rf debian
-            cp -r "$GITHUB_WORKSPACE/debian" .
-            chmod +x debian/rules 2>/dev/null || echo "Warning: Could not set executable bit on debian/rules"
-            echo "=== Debian directory copied ==="
-            ls -la debian/
-          else
-            echo "ERROR: debian/ directory not found in workspace!"
-            exit 1
-          fi
-
+          
+          rm -rf debian
+          cp -r "$GITHUB_WORKSPACE/debian" .
+          chmod +x debian/rules 2>/dev/null || echo "Warning: Could not set executable bit"
+          
+          osc add debian
+          osc add debian/*
+          osc add debian/source/* 2>/dev/null || echo "No source subdir"
+          
           echo "=== OBS package contents after update ==="
           ls -la
-
-          osc addremove
+          ls -la debian/
+          
           osc status
-          osc commit -m "Trigger rebuild for ${GITHUB_REF##*/} with debian support"
+          osc commit -m "Trigger rebuild for ${GITHUB_REF##*/}"
 
       - name: Verify OBS commit
         run: |
