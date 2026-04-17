@@ -6,13 +6,6 @@
     <param name="versionformat">@PARENT_TAG@</param>
     <param name="versionrewrite-pattern">v(.*)</param>
     <param name="filename">bel-dicts</param>
-    <param name="extract">debian/changelog</param>
-    <param name="extract">debian/compat</param>
-    <param name="extract">debian/control</param>
-    <param name="extract">debian/copyright</param>
-    <param name="extract">debian/install</param>
-    <param name="extract">debian/rules</param>
-    <param name="extract">debian/source/format</param>
   </service>
 
   <service name="set_version"/>
