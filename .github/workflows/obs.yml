@@ -12,10 +12,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install osc
+      - name: Install osc from OBS repository
         run: |
+          echo 'deb http://download.opensuse.org/repositories/openSUSE:/Tools/xUbuntu_24.04/ /' \
+            | sudo tee /etc/apt/sources.list.d/osc.list
+          curl -fsSL https://download.opensuse.org/repositories/openSUSE:/Tools/xUbuntu_24.04/Release.key \
+            | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/osc.gpg
           sudo apt-get update
           sudo apt-get install -y osc
+          osc --version
 
       - name: Configure osc
         env:
