@@ -32,28 +32,6 @@ jobs:
             echo "pass = ${OBS_PASSWORD}"
           } > ~/.config/osc/oscrc
 
-      - name: Debug file structure before OBS checkout
-        run: |
-          echo "=== Current directory ==="
-          pwd
-          echo "=== Root files ==="
-          ls -la
-          echo "=== debian/ directory ==="
-          ls -la debian/ || echo "ERROR: debian/ NOT FOUND!"
-          echo "=== obs/ directory ==="
-          ls -la obs/ || echo "obs/ not found"
-          echo "=== rpm/ directory ==="
-          ls -la rpm/ || echo "rpm/ not found"
-
-      - name: Make debian/rules executable
-        run: |
-          if [ -f "debian/rules" ]; then
-            chmod +x debian/rules
-            echo "Made debian/rules executable"
-          else
-            echo "WARNING: debian/rules not found!"
-          fi
-
       - name: Checkout OBS package and update
         env:
           OBS_USERNAME: ${{ secrets.OBS_USERNAME }}
@@ -61,21 +39,19 @@ jobs:
           osc co home:${OBS_USERNAME}:bel-dicts bel-dicts
           cd home:${OBS_USERNAME}:bel-dicts/bel-dicts
 
-          echo "=== Current OBS package contents before update ==="
-          ls -la
+          cp "$GITHUB_WORKSPACE/obs/_service" .
+          cp "$GITHUB_WORKSPACE/rpm/"*.spec .
 
-          cp "$GITHUB_WORKSPACE/obs/_service" . || echo "No _service file"
-          cp "$GITHUB_WORKSPACE/rpm/"*.spec . || echo "No spec file"
+          mkdir -p debian/source
+          cp "$GITHUB_WORKSPACE/debian/changelog"     debian/
+          cp "$GITHUB_WORKSPACE/debian/compat"        debian/
+          cp "$GITHUB_WORKSPACE/debian/control"       debian/
+          cp "$GITHUB_WORKSPACE/debian/copyright"     debian/
+          cp "$GITHUB_WORKSPACE/debian/install"       debian/
+          cp "$GITHUB_WORKSPACE/debian/rules"         debian/
+          cp "$GITHUB_WORKSPACE/debian/source/format" debian/source/
+          chmod +x debian/rules
 
-          rm -rf debian
-          cp -r "$GITHUB_WORKSPACE/debian" .
-          chmod +x debian/rules 2>/dev/null || echo "Warning: Could not set executable bit"
-
-          echo "=== OBS package contents after update ==="
-          ls -la
-          ls -la debian/
-
-          find debian -type f -exec osc add {} \;
           osc addremove
           osc status
           osc commit -m "Trigger rebuild for ${GITHUB_REF##*/}"
@@ -87,5 +63,3 @@ jobs:
           cd home:${OBS_USERNAME}:bel-dicts/bel-dicts
           echo "=== Final package state ==="
           osc ls
-          echo "=== Check if debian/ exists remotely ==="
-          osc ls -v | grep debian || echo "WARNING: debian/ not visible in OBS!"
