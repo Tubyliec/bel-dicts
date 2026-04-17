@@ -75,7 +75,7 @@ jobs:
           ls -la
           ls -la debian/
 
-          osc add debian
+          find debian -type f -exec osc add {} \;
           osc addremove
           osc status
           osc commit -m "Trigger rebuild for ${GITHUB_REF##*/}"
