@@ -46,15 +46,9 @@ jobs:
           cp "$GITHUB_WORKSPACE/obs/_service" .
           cp "$GITHUB_WORKSPACE/rpm/"*.spec .
 
-          mkdir -p debian/source
-          cp "$GITHUB_WORKSPACE/debian/changelog"     debian/
-          cp "$GITHUB_WORKSPACE/debian/compat"        debian/
-          cp "$GITHUB_WORKSPACE/debian/control"       debian/
-          cp "$GITHUB_WORKSPACE/debian/copyright"     debian/
-          cp "$GITHUB_WORKSPACE/debian/install"       debian/
-          cp "$GITHUB_WORKSPACE/debian/rules"         debian/
-          cp "$GITHUB_WORKSPACE/debian/source/format" debian/source/
-          chmod +x debian/rules
+          VERSION="${GITHUB_REF##*/v}"
+          sed "s/0\.1/${VERSION}/g" "$GITHUB_WORKSPACE/obs/bel-dicts.dsc" \
+            > bel-dicts.dsc
 
           osc addremove
           osc status
@@ -66,4 +60,4 @@ jobs:
         run: |
           cd home:${OBS_USERNAME}:bel-dicts/bel-dicts
           echo "=== Final package state ==="
-          osc ls
+          osc ls home:${OBS_USERNAME}:bel-dicts bel-dicts
