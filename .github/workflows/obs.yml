@@ -40,15 +40,38 @@ jobs:
         env:
           OBS_USERNAME: ${{ secrets.OBS_USERNAME }}
         run: |
+          VERSION="${GITHUB_REF##*/v}"
+
+          git archive --format=tar --prefix="bel-dicts-${VERSION}/" HEAD \
+            -o "bel-dicts_${VERSION}.tar"
+
+          MD5=$(md5sum "bel-dicts_${VERSION}.tar" | awk '{print $1}')
+          SHA256=$(sha256sum "bel-dicts_${VERSION}.tar" | awk '{print $1}')
+          SIZE=$(stat -c%s "bel-dicts_${VERSION}.tar")
+
+          cat > "bel-dicts_${VERSION}.dsc" << DSCEOF
+          Format: 3.0 (native)
+          Source: bel-dicts
+          Binary: bel-dicts
+          Architecture: all
+          Version: ${VERSION}
+          Maintainer: tubyliec <antikruk@vivaldi.net>
+          Build-Depends: debhelper-compat (= 13)
+          Package-List:
+           bel-dicts deb text optional arch=all
+          Files:
+           ${MD5} ${SIZE} bel-dicts_${VERSION}.tar
+          Checksums-Sha256:
+           ${SHA256} ${SIZE} bel-dicts_${VERSION}.tar
+          DSCEOF
+
           osc co home:${OBS_USERNAME}:bel-dicts bel-dicts
           cd home:${OBS_USERNAME}:bel-dicts/bel-dicts
 
           cp "$GITHUB_WORKSPACE/obs/_service" .
           cp "$GITHUB_WORKSPACE/rpm/"*.spec .
-
-          VERSION="${GITHUB_REF##*/v}"
-          sed "s/0\.1/${VERSION}/g" "$GITHUB_WORKSPACE/obs/bel-dicts.dsc" \
-            > bel-dicts.dsc
+          cp "$GITHUB_WORKSPACE/bel-dicts_${VERSION}.tar" .
+          cp "$GITHUB_WORKSPACE/bel-dicts_${VERSION}.dsc" .
 
           osc addremove
           osc status
