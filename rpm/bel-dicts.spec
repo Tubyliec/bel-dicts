@@ -4,7 +4,7 @@ Release:        1%{?dist}
 Summary:        Belarusian dictionaries for Hunspell
 License:        GPL-3.0-or-later
 BuildArch:      noarch
-Source0: %{name}-%{version}.tar
+Source0:        %{name}_%{version}.tar
 
 Requires:       hunspell
 
@@ -15,18 +15,12 @@ Belarusian dictionaries (be-BY) for Hunspell.
 %autosetup -n bel-dicts-%{version}
 
 %build
-ls -R
+# nothing
 
 %install
-mkdir -p %{buildroot}/usr/share/hunspell
-
-if [ -f dict/be-BY.aff ]; then
-    install -m 644 dict/be-BY.aff %{buildroot}/usr/share/hunspell/
-    install -m 644 dict/be-BY.dic %{buildroot}/usr/share/hunspell/
-else
-    install -m 644 bel-dicts/dict/be-BY.aff %{buildroot}/usr/share/hunspell/
-    install -m 644 bel-dicts/dict/be-BY.dic %{buildroot}/usr/share/hunspell/
-fi
+mkdir -p %{buildroot}%{_datadir}/hunspell
+install -m 644 dict/be-BY.aff %{buildroot}%{_datadir}/hunspell/
+install -m 644 dict/be-BY.dic %{buildroot}%{_datadir}/hunspell/
 
 %post
 if [ -d %{_datadir}/myspell/dicts ]; then
