@@ -43,11 +43,11 @@ jobs:
           VERSION="${GITHUB_REF##*/v}"
 
           git archive --format=tar --prefix="bel-dicts-${VERSION}/" HEAD \
-            -o "bel-dicts_${VERSION}.tar"
+            | gzip > "bel-dicts_${VERSION}.tar.gz"
 
-          MD5=$(md5sum "bel-dicts_${VERSION}.tar" | awk '{print $1}')
-          SHA256=$(sha256sum "bel-dicts_${VERSION}.tar" | awk '{print $1}')
-          SIZE=$(stat -c%s "bel-dicts_${VERSION}.tar")
+          MD5=$(md5sum "bel-dicts_${VERSION}.tar.gz" | awk '{print $1}')
+          SHA256=$(sha256sum "bel-dicts_${VERSION}.tar.gz" | awk '{print $1}')
+          SIZE=$(stat -c%s "bel-dicts_${VERSION}.tar.gz")
 
           printf 'Format: 3.0 (native)\n' > "bel-dicts_${VERSION}.dsc"
           printf 'Source: bel-dicts\n' >> "bel-dicts_${VERSION}.dsc"
@@ -57,15 +57,15 @@ jobs:
           printf 'Maintainer: tubyliec <antikruk@vivaldi.net>\n' >> "bel-dicts_${VERSION}.dsc"
           printf 'Build-Depends: debhelper-compat (= 13)\n' >> "bel-dicts_${VERSION}.dsc"
           printf 'Package-List:\n bel-dicts deb text optional arch=all\n' >> "bel-dicts_${VERSION}.dsc"
-          printf 'Files:\n %s %s bel-dicts_%s.tar\n' "${MD5}" "${SIZE}" "${VERSION}" >> "bel-dicts_${VERSION}.dsc"
-          printf 'Checksums-Sha256:\n %s %s bel-dicts_%s.tar\n' "${SHA256}" "${SIZE}" "${VERSION}" >> "bel-dicts_${VERSION}.dsc"
+          printf 'Files:\n %s %s bel-dicts_%s.tar.gz\n' "${MD5}" "${SIZE}" "${VERSION}" >> "bel-dicts_${VERSION}.dsc"
+          printf 'Checksums-Sha256:\n %s %s bel-dicts_%s.tar.gz\n' "${SHA256}" "${SIZE}" "${VERSION}" >> "bel-dicts_${VERSION}.dsc"
 
           osc co home:${OBS_USERNAME}:bel-dicts bel-dicts
           cd home:${OBS_USERNAME}:bel-dicts/bel-dicts
 
           cp "$GITHUB_WORKSPACE/obs/_service" .
           cp "$GITHUB_WORKSPACE/rpm/"*.spec .
-          cp "$GITHUB_WORKSPACE/bel-dicts_${VERSION}.tar" .
+          cp "$GITHUB_WORKSPACE/bel-dicts_${VERSION}.tar.gz" .
           cp "$GITHUB_WORKSPACE/bel-dicts_${VERSION}.dsc" .
 
           osc addremove
