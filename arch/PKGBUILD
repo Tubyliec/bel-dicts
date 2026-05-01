@@ -7,7 +7,7 @@ license=('LGPL-2.1-or-later')
 depends=('hunspell')
 url="https://github.com/tubyliec/bel-dicts"
 
-source=("$pkgname-$pkgver.tar.gz::https://github.com/tubyliec/bel-dicts/archive/refs/tags/$pkgver.tar.gz")
+source=("${pkgname}_${pkgver}.tar.gz")
 sha256sums=('SKIP')
 
 package() {
