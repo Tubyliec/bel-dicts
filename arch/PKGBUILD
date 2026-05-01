@@ -1,5 +1,5 @@
 pkgname=bel-dicts
-pkgver=0.6
+pkgver=0.1
 pkgrel=1
 pkgdesc="Belarusian dictionary for Hunspell"
 arch=('any')
