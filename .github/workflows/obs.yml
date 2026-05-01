@@ -65,6 +65,7 @@ jobs:
 
           cp "$GITHUB_WORKSPACE/obs/_service" .
           cp "$GITHUB_WORKSPACE/rpm/"*.spec .
+          cp "$GITHUB_WORKSPACE/arch/PKGBUILD" .
           cp "$GITHUB_WORKSPACE/bel-dicts_${VERSION}.tar.gz" .
           cp "$GITHUB_WORKSPACE/bel-dicts_${VERSION}.dsc" .
 
